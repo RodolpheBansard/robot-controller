@@ -1,0 +1,7 @@
+{
+  "name": "robot-controller",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
