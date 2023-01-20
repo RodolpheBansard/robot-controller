@@ -1,7 +1,10 @@
 {
   "name": "robot-controller",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {
+      "enabled": false
+    },
+    "cordova": {}
   },
   "type": "angular"
 }
