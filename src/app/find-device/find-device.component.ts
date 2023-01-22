@@ -1,31 +1,25 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertController, RefresherCustomEvent} from '@ionic/angular';
-
-import { DataService, Message } from '../services/data.service';
 import {BluetoothSerial} from "@ionic-native/bluetooth-serial/ngx";
+import {Device, DeviceService} from "../services/device.service";
 
-interface Device {
-  class:number,
-  id:string,
-  address:string,
-  name:string
-}
+
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-find-device',
+  templateUrl: 'find-device.component.html',
+  styleUrls: ['find-device.component.scss'],
 })
-export class HomePage implements OnInit{
+export class FindDeviceComponent implements OnInit{
   devices: Device[] = [];
   errorMessage:string=''
   messageSent: string = '';
   isConnected = false;
   message:string='';
 
-  constructor(private data: DataService,
-              private bluetoothSerial: BluetoothSerial,
-              private alertController: AlertController) { }
+  constructor(private bluetoothSerial: BluetoothSerial,
+              private alertController: AlertController,
+              private deviceService: DeviceService) { }
 
   refresh(ev: any) {
     setTimeout(() => {
@@ -35,7 +29,8 @@ export class HomePage implements OnInit{
 
 
   ngOnInit(): void {
-    this.checkBluetoothEnable();
+    this.devices = this.deviceService.devices;
+    // this.checkBluetoothEnable();
   }
 
   checkBluetoothEnable(){
@@ -62,7 +57,9 @@ export class HomePage implements OnInit{
   }
 
   connect(device:Device){
-    this.bluetoothSerial.connect(device.address).subscribe(()=> console.log('test'));
+    if(device.address){
+      this.bluetoothSerial.connect(device.address).subscribe(()=> console.log('test'));
+    }
   }
 
   sendMessage(){

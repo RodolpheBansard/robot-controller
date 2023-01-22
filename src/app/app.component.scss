@@ -1,0 +1,23 @@
+.header{
+  height: 10vh;
+  background: var(--grey800);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+
+  h1{
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary);
+    text-shadow: var(--primary-glow);
+    margin: 0;
+  }
+
+  .header-icon{
+    width: 30px;
+  }
+}
