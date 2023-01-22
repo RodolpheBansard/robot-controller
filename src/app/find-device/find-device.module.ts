@@ -4,21 +4,15 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 
 import { FindDeviceComponent } from './find-device.component';
-import {RouterModule, Routes} from "@angular/router";
+import {FindDeviceRoutingModule} from "./find-device-routing.module";
 
-const routes: Routes = [
-  {
-    path: '',
-    component: FindDeviceComponent
-  }
-];
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    FindDeviceRoutingModule
   ],
   declarations: [FindDeviceComponent]
 })

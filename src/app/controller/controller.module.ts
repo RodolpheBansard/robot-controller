@@ -1,20 +1,16 @@
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {RouterModule, Routes} from "@angular/router";
+import {IonicModule} from "@ionic/angular";
+import {ControllerRoutingModule} from "./controller-routing.module";
 import {ControllerComponent} from "./controller.component";
 
-const routes: Routes = [
-  {
-    path: '',
-    component: ControllerComponent
-  }
-];
 
 @NgModule({
-  declarations: [],
+  declarations: [ControllerComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes),
+    IonicModule,
+    ControllerRoutingModule
   ],
 })
 export class ControllerModule { }

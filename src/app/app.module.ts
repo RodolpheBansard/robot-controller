@@ -13,5 +13,6 @@ import {BluetoothSerial} from "@ionic-native/bluetooth-serial/ngx";
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },BluetoothSerial],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}
