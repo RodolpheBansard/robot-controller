@@ -2,9 +2,9 @@
   height: 90vh;
   display: flex;
   flex-direction: column;
+  overflow: auto;
 
   .controls-container{
-    height: 40vh;
 
     .speed-input-container{
       display: flex;
@@ -26,8 +26,7 @@
           --bar-background: var(--grey800);
           --bar-background-active: var(--primary);
           --knob-size: 20px;
-          --pin-background: red;
-          --pin-color: blue;
+          --pin-background: none;
         }
         ion-range::part(knob) {
           background: var(--primary);
@@ -41,13 +40,65 @@
   }
 
   .pid-container{
-    height: 30vh;
-    background: blue;
+    border-bottom: 4px solid #4E4F51;
+    border-top: 4px solid #4E4F51;
+    padding: 16px;
+
+    h1{
+      font-size: 24px;
+    }
+
+    .pid-inputs-container{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+
+      .pid-labels{
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+
+        span{
+          font-size: 32px;
+        }
+      }
+
+      .pid-inputs{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 16px;
+      }
+    }
+    .pid-button{
+      margin-left: 64px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      background: var(--grey800);
+      border: 1px solid var(--primary);
+      border-radius: 4px;
+      color: var(--primary);
+      padding: 4px 8px;
+      gap: 8px;
+
+      img{
+        width: 20px;
+        height: 20px;
+      }
+    }
   }
 
   .message-container{
-    height: 20vh;
-    background: green;
+    padding: 16px;
+
+    h1{
+      font-size: 24px;
+    }
+    display: flex;
+    flex-direction: column;
   }
 
   .controls {
@@ -99,4 +150,21 @@
   .backward-button {
     grid-area: 3 / 2 / 4 / 3;
   }
+}
+
+
+.text-input{
+  background: var(--grey800);
+  border: 1px solid var(--grey500);
+  color: var(--grey500);
+  border-radius: 4px;
+  height: 32px;
+  width: 120px;
+  padding: 0 8px;
+  transition: .3s;
+}
+.text-input:focus{
+  border: 1px solid var(--primary);
+  outline: none;
+  color: var(--primary);
 }

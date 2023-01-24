@@ -12,59 +12,25 @@ import {Device, DeviceService} from "../services/device.service";
 })
 export class FindDeviceComponent implements OnInit{
   devices: Device[] = [];
-  errorMessage:string=''
-  messageSent: string = '';
-  isConnected = false;
-  message:string='';
 
-  constructor(private bluetoothSerial: BluetoothSerial,
-              private alertController: AlertController,
-              private deviceService: DeviceService) { }
 
-  refresh(ev: any) {
-    setTimeout(() => {
-      (ev as RefresherCustomEvent).detail.complete();
-    }, 3000);
-  }
+  constructor(public deviceService: DeviceService) { }
+
 
 
   ngOnInit(): void {
-    this.devices = this.deviceService.devices;
-    // this.checkBluetoothEnable();
-  }
+    this.deviceService.checkBluetoothEnable()
 
-  checkBluetoothEnable(){
-    this.bluetoothSerial.isEnabled().then((success) => {
-      this.listDevices();
-
-    },(error) => {
-      this.alertController.create({
-        header:'Error'
-      })
-      this.errorMessage= "bluetooth not enable"
+    this.deviceService.devices.subscribe((data) => {
+      if(data) {
+        this.devices=data;
+      }
     })
   }
 
-  listDevices(){
-    this.bluetoothSerial.list().then((success)=> {
-      this.devices = success;
-    },(error) => {
-      this.alertController.create({
-        header:'bluetooth error'
-      })
-      this.errorMessage="error while listing device"
-    })
+  selectDevice(device: Device){
+    this.deviceService.connect(device);
   }
 
-  connect(device:Device){
-    if(device.address){
-      this.bluetoothSerial.connect(device.address).subscribe(()=> console.log('test'));
-    }
-  }
 
-  sendMessage(){
-    this.bluetoothSerial.write(this.message).then((success) => {
-      this.messageSent = this.message;
-    })
-  }
 }
