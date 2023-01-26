@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {BluetoothSerial} from "@ionic-native/bluetooth-serial/ngx";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, from} from "rxjs";
 import {ToastController} from "@ionic/angular";
 import {Router} from "@angular/router";
 
@@ -35,9 +35,13 @@ export class DeviceService {
 
   constructor(private bluetoothSerial: BluetoothSerial,
               private toastController: ToastController,
-              private router:Router) { }
+              private router:Router) {
+    // Reset bluetooth
+    this.bluetoothSerial.disconnect();
+  }
 
   checkBluetoothEnable(){
+
     this.isLoadingDeviceBS.next(true);
     setTimeout(() => {
       this.isLoadingDeviceBS.next(false);
@@ -55,21 +59,32 @@ export class DeviceService {
       this.devices.next(success);
     },(error) => {
       this.displayToast('error while listing device').then();
+      this.devices.next([])
     })
   }
 
   connect(device:Device){
     if(device.address){
-      this.bluetoothSerial.connect(device.address).subscribe(() => {
-        this.router.navigateByUrl('controller');
+      this.bluetoothSerial.connect(device.address).subscribe(success => {
+        this.displayToast("Successfully Connected");
+        this.router.navigateByUrl('controller')
+      }, error => {
+        this.displayToast(error);
       });
     }
   }
 
+
+
   sendMessage(message:string){
-    this.bluetoothSerial.write(message).then((success) => {
-      this.displayToast('message sent')
+    this.bluetoothSerial.isConnected().then((success) => {
+      this.bluetoothSerial.write(message).then((success) => {
+        this.displayToast('message sent').then()
+      })
+    }, (error) => {
+      this.displayToast('Error while sending message')
     })
+
   }
 
   async displayToast(message:string) {

@@ -93,12 +93,33 @@
 
   .message-container{
     padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 
     h1{
       font-size: 24px;
     }
-    display: flex;
-    flex-direction: column;
+
+
+    .send-button{
+      display: flex;
+      align-items: center;
+      background: var(--grey800);
+      border: 1px solid var(--primary);
+      border-radius: 4px;
+      color: var(--primary);
+      padding: 4px 8px;
+      gap: 8px;
+      width: fit-content;
+    }
+
+    .terminal-input{
+      display: flex;
+      flex-direction: row;
+      gap: 32px;
+      align-items: center;
+    }
   }
 
   .controls {

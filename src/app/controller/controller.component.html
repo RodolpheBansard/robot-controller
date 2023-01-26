@@ -2,19 +2,19 @@
 
   <div class="controls-container">
     <div class="controls">
-      <div class="forward-button control-button">
+      <div (click)="forward()" class="forward-button control-button">
         <img class="primary-icon" src="assets/icon/forward.svg">
       </div>
-      <div class="left-button control-button">
+      <div (click)="turnLeft()" class="left-button control-button">
         <img class="primary-icon" src="assets/icon/turn-left.svg">
       </div>
-      <div class="stop-button control-button">
+      <div (click)="stop()" class="stop-button control-button">
         <div class="stop-icon"></div>
       </div>
-      <div class="right-button control-button">
+      <div (click)="turnRight()" class="right-button control-button">
         <img class="primary-icon" src="assets/icon/turn-right.svg">
       </div>
-      <div class="backward-button control-button">
+      <div (click)="backward()" class="backward-button control-button">
         <img class="primary-icon" src="assets/icon/backward.svg">
       </div>
     </div>
@@ -22,7 +22,7 @@
       <span class="regular-text">Speed</span>
       <div class="speed-input">
         <span class="primary-text">0</span>
-        <ion-range [min]="0" [max]="255" [pin]="true" [step]="5" [ticks]="false" [snaps]="true"></ion-range>
+        <ion-range (ionKnobMoveEnd)="setSpeed($event)" [min]="0" [max]="255" [pin]="true" [step]="5" [ticks]="false" [snaps]="true"></ion-range>
         <span class="primary-text">255</span>
       </div>
     </div>
@@ -36,11 +36,11 @@
         <span class="regular-text">D</span>
       </div>
       <div class="pid-inputs">
-        <input class="text-input">
-        <input class="text-input">
-        <input class="text-input">
+        <input [(ngModel)]="p" class="text-input">
+        <input [(ngModel)]="i" class="text-input">
+        <input [(ngModel)]="d" class="text-input">
       </div>
-      <button class="pid-button">
+      <button (click)="sendPID()" class="pid-button">
         <span>Send PID</span>
         <img src="assets/icon/curve.svg">
       </button>
@@ -49,6 +49,14 @@
   <div class="message-container">
     <h1 class="primary-text">Terminal</h1>
     <span class="regular-text">Message</span>
-    <input class="text-input">
+    <div class="terminal-input">
+      <input [(ngModel)]="terminalMessage" class="text-input">
+      <button (click)="sendMessage(terminalMessage)" class="send-button">
+        <span>Send Message</span>
+        <img src="assets/icon/send.svg">
+      </button>
+    </div>
+
   </div>
+
 </div>
