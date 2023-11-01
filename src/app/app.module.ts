@@ -6,7 +6,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import {BluetoothSerial} from "@ionic-native/bluetooth-serial/ngx";
+import {BluetoothSerial} from "@awesome-cordova-plugins/bluetooth-serial/ngx";
 
 @NgModule({
   declarations: [AppComponent],

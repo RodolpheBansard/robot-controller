@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {AlertController, RefresherCustomEvent} from '@ionic/angular';
-import {BluetoothSerial} from "@ionic-native/bluetooth-serial/ngx";
 import {Device, DeviceService} from "../services/device.service";
 
 

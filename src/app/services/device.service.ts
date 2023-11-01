@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BluetoothSerial} from "@ionic-native/bluetooth-serial/ngx";
+import {BluetoothSerial} from "@awesome-cordova-plugins/bluetooth-serial/ngx";
 import {BehaviorSubject, from} from "rxjs";
 import {ToastController} from "@ionic/angular";
 import {Router} from "@angular/router";
