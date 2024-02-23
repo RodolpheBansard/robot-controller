@@ -1,8 +1,18 @@
 import { Injectable } from '@angular/core';
 import {BluetoothSerial} from "@awesome-cordova-plugins/bluetooth-serial/ngx";
-import {BehaviorSubject, from} from "rxjs";
+import {BehaviorSubject, from, Observable} from "rxjs";
 import {ToastController} from "@ionic/angular";
 import {Router} from "@angular/router";
+
+export interface ErrorData{
+  name:string,
+  series:ErrorDataElement[]
+}
+
+export interface ErrorDataElement{
+  name:string,
+  value:number
+}
 
 export interface Device {
   class?:number,
@@ -21,6 +31,17 @@ export class DeviceService {
   isConnected = false;
   message:string='';
   public isLoadingDeviceBS= new BehaviorSubject(false);
+
+  data : ErrorDataElement[] = [];
+
+  public counter$ = new BehaviorSubject(0);
+  public chaine$ = new BehaviorSubject('');
+  public data$ = new BehaviorSubject<ErrorData>({
+    name:"test",
+    series:[]
+  });
+
+
 
 
   // devices: Device[] = [
@@ -68,10 +89,33 @@ export class DeviceService {
       this.bluetoothSerial.connect(device.address).subscribe(success => {
         this.displayToast("Successfully Connected");
         this.router.navigateByUrl('controller')
+        this.startReading();
       }, error => {
         this.displayToast(error);
       });
     }
+  }
+
+  startReading() {
+    this.bluetoothSerial.subscribe('\n').subscribe(
+      (data:string) => {
+        const name = data.split(':')[0];
+        const value = +data.split(':')[1];
+        this.data.push({
+          name:name,
+          value:value
+        });
+        this.counter$.next(this.counter$.getValue() + 1);
+        this.chaine$.next(data);
+        const temp = this.data$.getValue();
+        temp.series = this.data;
+        this.data$.next(temp);
+        this.counter$.next(temp.series.length);
+      },
+      (error) => {
+        this.displayToast('Error while reading message')
+      }
+    );
   }
 
 

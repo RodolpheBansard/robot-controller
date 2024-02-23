@@ -4,6 +4,8 @@ import {IonicModule} from "@ionic/angular";
 import {ControllerRoutingModule} from "./controller-routing.module";
 import {ControllerComponent} from "./controller.component";
 import {FormsModule} from "@angular/forms";
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 
 @NgModule({
@@ -12,7 +14,9 @@ import {FormsModule} from "@angular/forms";
         CommonModule,
         IonicModule,
         ControllerRoutingModule,
-        FormsModule
+        FormsModule,
+        NgxChartsModule,
+
     ],
 })
 export class ControllerModule { }
