@@ -5,5 +5,7 @@ export enum Command {
   FORWARD = 'forward',
   BACKWARD = 'backward',
   SPEED = 'speed:',
-  PID = 'pid:',
+  PID_MOVE = 'pidMove:',
+  PID_TURN = 'pidTurn:',
+  STRAT = 'strat:'
 }

@@ -41,39 +41,55 @@
         <input [(ngModel)]="i" class="text-input">
         <input [(ngModel)]="d" class="text-input">
       </div>
-      <button (click)="sendPID()" class="pid-button">
-        <span>Send PID</span>
-        <img src="assets/icon/curve.svg">
-      </button>
+      <div class="pid-inputs">
+        <button (click)="sendMovePID()" class="pid-button">
+          <span>Send Move PID</span>
+          <img style="transform: rotate(90deg);" src="assets/icon/forward.svg">
+        </button>
+        <button (click)="sendTurnPID()" class="pid-button">
+          <span>Send Turn PID</span>
+          <img src="assets/icon/turn-right.svg">
+        </button>
+      </div>
+
     </div>
   </div>
   <div class="message-container">
-    <h1 class="primary-text">Terminal</h1>
-    <span class="regular-text">Message</span>
-    <div class="terminal-input">
-      <input [(ngModel)]="terminalMessage" class="text-input">
-      <button (click)="sendMessage(terminalMessage)" class="send-button">
-        <span>Send Message</span>
-        <img src="assets/icon/send.svg">
-      </button>
+    <h1 class="primary-text">Strategies</h1>
+    <div class="strats-container">
+      <span class="strat" *ngFor="let strat of strats" (click)="sendStrategy(strat)">{{strat.name}}</span>
     </div>
-
   </div>
 
-  <ngx-charts-line-chart
-    [scheme]="'natural'"
-    [view]="view"
-    [legend]="legend"
-    [xAxis]="xAxis"
-    [yAxis]="yAxis"
-    [xAxisLabel]="xAxisLabel"
-    [yAxisLabel]="yAxisLabel"
-    [timeline]="timeline"
-    [results]="multi"
-    (select)="onSelect($event)"
-    (activate)="onActivate($event)"
-    (deactivate)="onDeactivate($event)"
-  >
-  </ngx-charts-line-chart>
+<!--  <div class="message-container">-->
+<!--    <h1 class="primary-text">Terminal</h1>-->
+<!--    <span class="regular-text">Message</span>-->
+<!--    <div class="terminal-input">-->
+<!--      <input [(ngModel)]="terminalMessage" class="text-input">-->
+<!--      <button (click)="sendMessage(terminalMessage)" class="send-button">-->
+<!--        <span>Send Message</span>-->
+<!--        <img src="assets/icon/send.svg">-->
+<!--      </button>-->
+<!--    </div>-->
+
+<!--  </div>-->
+
+
+
+<!--  <ngx-charts-line-chart-->
+<!--    [scheme]="'natural'"-->
+<!--    [view]="view"-->
+<!--    [legend]="legend"-->
+<!--    [xAxis]="xAxis"-->
+<!--    [yAxis]="yAxis"-->
+<!--    [xAxisLabel]="xAxisLabel"-->
+<!--    [yAxisLabel]="yAxisLabel"-->
+<!--    [timeline]="timeline"-->
+<!--    [results]="multi"-->
+<!--    (select)="onSelect($event)"-->
+<!--    (activate)="onActivate($event)"-->
+<!--    (deactivate)="onDeactivate($event)"-->
+<!--  >-->
+<!--  </ngx-charts-line-chart>-->
 
 </div>

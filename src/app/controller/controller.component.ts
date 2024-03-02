@@ -2,6 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import {DeviceService} from "../services/device.service";
 import {Command} from "../services/command";
 import { multi } from './data';
+import {initializeApp} from "firebase/app";
+import {collection, getDocs, getFirestore} from "firebase/firestore/lite";
+
+interface Strat{
+  id:string;
+  name:string;
+  steps:Step[];
+}
+
+interface  Step{
+  name:string;
+  yPos:number;
+  xPos:number;
+  angle:number;
+  type:string;
+  actions:string;
+  speed:number;
+}
 
 
 
@@ -11,6 +29,9 @@ import { multi } from './data';
   styleUrls: ['./controller.component.scss'],
 })
 export class ControllerComponent implements OnInit {
+
+  strats: Strat[] = [];
+
   multi : any
   view: [number, number] = [700, 300];
 
@@ -46,6 +67,24 @@ export class ControllerComponent implements OnInit {
   terminalMessage : string= '';
 
   constructor(private deviceService:DeviceService) {
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAFDv7bi3d-Sx8V-KmFiViTqskhhidxbEk",
+      authDomain: "strat-editor.firebaseapp.com",
+      projectId: "strat-editor",
+      storageBucket: "strat-editor.appspot.com",
+      messagingSenderId: "877652619508",
+      appId: "1:877652619508:web:a5bc283d2bd35c07ebaea1"
+    };
+
+// Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    getStrats(db).then((data) => {
+      this.strats = data as Strat[];
+      console.log(this.strats)
+    })
+
     deviceService.data$.subscribe((data) => {
       Object.assign(this, { data });
     })
@@ -74,9 +113,18 @@ export class ControllerComponent implements OnInit {
     const newSpeed = Command.SPEED + value.detail.value;
     this.sendMessage(newSpeed);
   }
-  sendPID(){
-    const pidConfig = Command.PID + this.p +'/' + this.i +'/' +this.d
+  sendMovePID(){
+    const pidConfig = Command.PID_MOVE + this.p +'/' + this.i +'/' +this.d
     this.sendMessage(pidConfig);
+  }
+  sendTurnPID(){
+    const pidConfig = Command.PID_TURN + this.p +'/' + this.i +'/' +this.d
+    this.sendMessage(pidConfig);
+  }
+  sendStrategy(strategy:Strat){
+    const strategyJson = JSON.stringify(strategy);
+    const strategyCommand = Command.STRAT + strategyJson;
+    this.sendMessage(strategyCommand);
   }
   sendMessage(message: string){
     this.deviceService.sendMessage(message + ';');
@@ -102,4 +150,11 @@ export class ControllerComponent implements OnInit {
   onDeactivate(data:any): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
+}
+
+async function getStrats(db:any) {
+  const stratsCol = collection(db, 'strats');
+  const citySnapshot = await getDocs(stratsCol);
+  const stratList = citySnapshot.docs.map(doc => doc.data());
+  return stratList;
 }

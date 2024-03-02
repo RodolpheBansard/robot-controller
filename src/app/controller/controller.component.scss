@@ -190,3 +190,20 @@
   color: var(--primary);
 }
 
+.strats-container{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 2px solid white;
+  border-radius: 8px;
+  padding: 8px;
+  max-height: 200px;
+  overflow: auto;
+
+  .strat{
+    color: white;
+  }
+  .strat:active{
+    background: white;
+  }
+}
