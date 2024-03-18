@@ -89,13 +89,30 @@
         height: 20px;
       }
     }
+    .pid-button:active{
+      box-shadow:  0px 0px 20px rgba(203,168,105,.5);
+    }
   }
 
-  .message-container{
+  .strategies-container{
+    margin-bottom: 48px;
     padding: 16px;
     display: flex;
     flex-direction: column;
     gap: 16px;
+
+    .strategies-header{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-icon{
+      transition: 0.1s;
+    }
+    .header-icon:active{
+      transform: scale(1.2);
+    }
 
     h1{
       font-size: 24px;

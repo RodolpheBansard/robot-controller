@@ -4,6 +4,8 @@ import {Command} from "../services/command";
 import { multi } from './data';
 import {initializeApp} from "firebase/app";
 import {collection, getDocs, getFirestore} from "firebase/firestore/lite";
+import {Observable, from, map} from "rxjs";
+import { ChangeDetectorRef } from '@angular/core'
 
 interface Strat{
   id:string;
@@ -29,8 +31,7 @@ interface  Step{
   styleUrls: ['./controller.component.scss'],
 })
 export class ControllerComponent implements OnInit {
-
-  strats: Strat[] = [];
+  strats$: Observable<Strat[]> = new Observable<Strat[]>();
 
   multi : any
   view: [number, number] = [700, 300];
@@ -66,7 +67,18 @@ export class ControllerComponent implements OnInit {
   d : string= '';
   terminalMessage : string= '';
 
-  constructor(private deviceService:DeviceService) {
+  constructor(private deviceService:DeviceService,private changeRef: ChangeDetectorRef) {
+    this.fetchStrat();
+
+    deviceService.data$.subscribe((data) => {
+      Object.assign(this, { data });
+    })
+
+  }
+
+  ngOnInit() {this.changeRef.detectChanges();}
+
+  fetchStrat(){
     // Your web app's Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyAFDv7bi3d-Sx8V-KmFiViTqskhhidxbEk",
@@ -80,18 +92,11 @@ export class ControllerComponent implements OnInit {
 // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    getStrats(db).then((data) => {
-      this.strats = data as Strat[];
-      console.log(this.strats)
-    })
+    this.strats$ = from(getStrats(db)).pipe(map((value) => {
+      return value as Strat[];
 
-    deviceService.data$.subscribe((data) => {
-      Object.assign(this, { data });
-    })
-
+    }));
   }
-
-  ngOnInit() {}
 
 
   turnLeft(){

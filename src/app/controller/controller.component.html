@@ -54,10 +54,13 @@
 
     </div>
   </div>
-  <div class="message-container">
-    <h1 class="primary-text">Strategies</h1>
+  <div class="strategies-container">
+    <div class="strategies-header">
+      <h1 class="primary-text">Strategies</h1>
+      <img (click)="fetchStrat()" class="primary-icon header-icon" src="assets/icon/refresh.svg">
+    </div>
     <div class="strats-container">
-      <span class="strat" *ngFor="let strat of strats" (click)="sendStrategy(strat)">{{strat.name}}</span>
+      <span class="strat" *ngFor="let strat of strats$ | async" (click)="sendStrategy(strat)">{{strat.name}}</span>
     </div>
   </div>
 

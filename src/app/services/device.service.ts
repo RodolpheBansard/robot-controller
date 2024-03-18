@@ -69,7 +69,7 @@ export class DeviceService {
       this.bluetoothSerial.isEnabled().then((success) => {
         this.listDevices();
       },(error) => {
-        this.displayToast(error).then();
+        this.displayToast(error,500).then();
       })
     },1000)
 
@@ -79,7 +79,7 @@ export class DeviceService {
     this.bluetoothSerial.list().then((success)=> {
       this.devices.next(success);
     },(error) => {
-      this.displayToast('error while listing device').then();
+      this.displayToast('error while listing device',500).then();
       this.devices.next([])
     })
   }
@@ -87,11 +87,11 @@ export class DeviceService {
   connect(device:Device){
     if(device.address){
       this.bluetoothSerial.connect(device.address).subscribe(success => {
-        this.displayToast("Successfully Connected");
+        this.displayToast("Successfully Connected",500);
         this.router.navigateByUrl('controller')
         this.startReading();
       }, error => {
-        this.displayToast(error);
+        this.displayToast(error,500);
       });
     }
   }
@@ -113,7 +113,7 @@ export class DeviceService {
         this.counter$.next(temp.series.length);
       },
       (error) => {
-        this.displayToast('Error while reading message')
+        this.displayToast('Error while reading message',500)
       }
     );
   }
@@ -123,18 +123,18 @@ export class DeviceService {
   sendMessage(message:string){
     this.bluetoothSerial.isConnected().then((success) => {
       this.bluetoothSerial.write(message).then((success) => {
-        this.displayToast('message sent').then()
+        this.displayToast('message sent',500).then()
       })
     }, (error) => {
-      this.displayToast('Error while sending message')
+      this.displayToast('Error while sending message',500)
     })
 
   }
 
-  async displayToast(message:string) {
+  async displayToast(message:string,duration:number) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 1500,
+      duration: duration,
       position: 'bottom'
     });
 
