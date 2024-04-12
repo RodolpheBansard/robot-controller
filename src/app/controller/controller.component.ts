@@ -23,6 +23,29 @@ interface  Step{
   speed:number;
 }
 
+interface StratToSend{
+  id:string;
+  name:string;
+  steps:StepToSend[];
+}
+
+interface StepToSend{
+  name:string;
+  yPos:number;
+  xPos:number;
+  angle:number;
+  type:string;
+  actions:StepAction[];
+  speed:number;
+}
+
+interface StepAction{
+  type:string;
+  index:number;
+  setPoint:number;
+  delay:number;
+}
+
 
 
 @Component({
@@ -127,11 +150,30 @@ export class ControllerComponent implements OnInit {
     this.sendMessage(pidConfig);
   }
   sendStrategy(strategy:Strat){
-    const strategyJson = JSON.stringify(strategy);
-    const strategyCommand = Command.STRAT + strategyJson;
-    this.sendMessage(strategyCommand);
+
+    const strategyJson = JSON.stringify(this.convertToStratToSend(strategy));
+    const sendIteration = Math.ceil(strategyJson.length/200);
+    this.sendMessage(Command.STRAT + "/" + sendIteration);
+    let counter = 0;
+    let i = 0;
+    const interval = setInterval(() => {
+      if(counter< sendIteration){
+        this.sendMessage(Command.START_PART + strategyJson.slice(i, i+200));
+        i+=200;
+        counter++;
+      }
+      else{
+        clearInterval(interval);
+      }
+
+    },100)
+
   }
+
+
+
   sendMessage(message: string){
+    console.log(message)
     this.deviceService.sendMessage(message + ';');
   }
 
@@ -155,7 +197,47 @@ export class ControllerComponent implements OnInit {
   onDeactivate(data:any): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
+
+  convertToStratToSend(strat: Strat){
+    let stratToSend : StratToSend = {
+      id:strat.id,
+      name:strat.name,
+      steps: []
+    };
+
+    strat.steps.forEach((step) => {
+      let stepsToSend : StepToSend ={
+        name: step.name,
+        yPos: step.yPos,
+        xPos:step.xPos,
+        angle:step.angle,
+        type:step.type,
+        speed:step.speed,
+        actions:[]
+      }
+      let actionsArray: StepAction[] = [];
+      const actionsStringArray = step.actions.split('\n');
+      actionsStringArray.forEach((action) => {
+        actionsArray.push({
+          type: action.split(' ')[0],
+          index: +action.split(' ')[1],
+          setPoint: +action.split(' ')[2],
+          delay: +action.split(' ')[3]
+
+        })
+
+      })
+      stepsToSend.actions = actionsArray
+
+      stratToSend.steps.push(stepsToSend);
+    })
+
+    return stratToSend
+
+  }
 }
+
+
 
 async function getStrats(db:any) {
   const stratsCol = collection(db, 'strats');
